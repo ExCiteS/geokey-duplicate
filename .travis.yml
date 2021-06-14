@@ -11,7 +11,7 @@ addons:
   postgresql: '9.4'
   apt:
     packages:
-      - postgresql-9.4-postgis-2.3
+      - postgresql-9.6-postgis-2.3
 
 env:
   - GEOKEY='>=1.6,<1.7' DJANGO='>=1.11,<1.12' DEPLOY=0
