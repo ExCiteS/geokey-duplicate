@@ -11,7 +11,7 @@
     :target: https://coveralls.io/r/ExCiteS/geokey-duplicate
 
 geokey-duplicate
-=============
+================
 
 Duplicate project and categories
 
