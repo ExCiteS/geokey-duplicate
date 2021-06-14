@@ -1,0 +1,57 @@
+dist: trusty
+language: python
+
+services:
+  - postgresql
+
+python:
+  - '2.7'
+
+addons:
+  postgresql: '9.4'
+  apt:
+    packages:
+      - postgresql-9.4-postgis-2.3
+
+env:
+  - GEOKEY='>=1.6,<1.7' DJANGO='>=1.11,<1.12' DEPLOY=0
+  - GEOKEY='>=1.7,<1.8' DJANGO='>=1.11,<1.12' DEPLOY=1
+
+virtualenv:
+  system_site_packages: true
+
+install:
+  - sudo -E apt-get -yq update &>> ~/apt-get-update.log
+  - sudo apt-get install binutils libav-tools
+  - sudo apt-get -yq install libgdal-dev python-gdal
+  - gdal-config --version
+  - export C_INCLUDE_PATH=/usr/include/gdal
+  - export CPLUS_INCLUDE_PATH=/usr/include/gdal
+
+before_script:
+  - psql template1 postgres -c 'create extension hstore;'
+  - psql -c 'create database geokey;' -U postgres
+  - psql -U postgres -d geokey -c 'create extension postgis;'
+  - pip install geokey$GEOKEY
+  - pip install django$DJANGO
+  - python -c "import django; print('DJANGO %s ' % django.get_version())"
+  - python -c "from geokey.version import get_version; print('GEOKEY %s' % get_version())"
+  - pip install -r travis_ci/requirements.txt
+  - pip install -e .
+  - python travis_ci/manage.py migrate
+
+script:
+  - coverage run --source=geokey_duplicate travis_ci/manage.py test geokey_duplicate
+
+after_success:
+  - coveralls
+
+deploy:
+  provider: pypi
+  user: excites
+  password:
+    secure: LQJl420b+hzFMAIPwJL2v1FVNMG9lxgJPH+9H4/SyI5hd/B41QO88Cz0xMMslRELkG8exdZkJ7mBi4jitykkHb4xTWvhAexEEqJVZ54f8IXGq7TeAxlRS3BhjVDJx2wSntfdXnfbQCFcDBb5jTJ5N0g64gucETGtU9UzV4rChMg9lrC7Y+QmyNa4du18AXIzRwmP7SfDC1q5Dn64IL3Y9EGV1SjRey0j4tMC4eH9GQFzWbxB9jnfd6nisKxkdihW33yDkleHdc3PHKuOMZJZbl/9d923zk4K+sBpMZBeGirm3lEZG2cWQ/ykrZ3y2ypn+yhyLWqMoiIzhhd+Pm+xDknMSjwzDvLXRmAMWZZ1I1IibZx0F8QE1K24WWsI9TpDEUckNCjAxTfNgl36S1nTSQKvhQ9ZNYXvCYn3tVKW6oAIcse7kPwtcyUMAOqtDcRxf914fYB3sjafwDRvu9+zbmaOhwD73YcgJF9KDnus0uKkxQXdlp2IwLNZHeV2kSM6jCyNDWZu5VxZCWeT9eQllyRgZJ1cgZQhwaAv27DCk2+IKJwvEUWDSjXxZy1O2NRlJy9Nyu38GV3sR5qowF4lHnKrqcYOeDUIxseWsZIM/AN7VOIh1dgKW0stVG2TeS+bEzH52o6jBTLz/RKzQKiCeemh4eoyPuMcThmnfCrpBDU=
+  on:
+    tags: true
+    branch: master
+    condition: $DEPLOY = 1
