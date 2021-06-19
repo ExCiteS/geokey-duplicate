@@ -10,6 +10,7 @@
     :alt: Coveralls Test Coverage
     :target: https://coveralls.io/r/ExCiteS/geokey-duplicate
 
+
 geokey-duplicate
 ================
 
