@@ -2,10 +2,8 @@ from django.test import TestCase
 from django.core.urlresolvers import reverse, resolve
 
 from ..views import (
-    IndexPage, ExportOverview, ExportCreate, ExportDelete,
-    ExportGetProjectCategories, ExportGetProjectCategoryContributions,
-    ExportGetExportContributions, ExportToRenderer
-)
+    IndexPage, DuplicateProject, DuplicateCategory
+    )
 
 
 class UrlTest(TestCase):
