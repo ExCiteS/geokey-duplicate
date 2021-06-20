@@ -2,9 +2,9 @@
     :alt: PyPI Package
     :target: https://pypi.python.org/pypi/geokey-duplicate
 
-.. image:: https://img.shields.io/travis/ExCiteS/geokey-duplicate/master.svg
+.. image:: https://www.travis-ci.com/ExCiteS/geokey-duplicate.svg?branch=main
     :alt: Travis CI Build Status
-    :target: https://travis-ci.org/ExCiteS/geokey-duplicate
+    :target: https://www.travis-ci.com/github/ExCiteS/geokey-duplicate/
 
 .. image:: https://img.shields.io/coveralls/ExCiteS/geokey-duplicate/master.svg
     :alt: Coveralls Test Coverage
