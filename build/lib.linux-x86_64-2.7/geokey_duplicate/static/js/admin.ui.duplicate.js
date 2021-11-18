@@ -125,16 +125,7 @@ $("#form_project").submit(function (event) {
       $("button").removeAttr('disabled');
       $("#statusproject").attr('class','alert alert-success')
       $("#statusproject").html("The project <b>"+$('#pproject_origin').find('option:selected').text()+"</b> has been duplicated into <a href='/admin/projects/"+obj[0]['pk']+"/'>"+obj[0]['fields']['name']+"</a>")
-      $("#pproject_origin").append("<option value='"+obj[0]['pk']+"' selected>"+obj[0]['fields']['name']+"</option>")
-      // Re-sort 
-      var options = $("#pproject_origin option");                    // Collect options         
-      options.detach().sort(function(a,b) {               // Detach from select, then Sort
-        var at = $(a).text();
-        var bt = $(b).text();         
-        return (at > bt)?1:((at < bt)?-1:0);            // Tell the sort function how to order
-      });
-      options.appendTo("#pproject_origin"); 
-         }).fail(function (jqXHR, textStatus){
+    }).fail(function (jqXHR, textStatus){
    }).error(function(xhr){
 	const obj = JSON.parse(xhr.responseText)
 	$("button").removeAttr('disabled')
@@ -168,7 +159,6 @@ $("#form_category").submit(function (event) {
       $("button").removeAttr('disabled');
       $("#statuscategory").html("A new category has been created")
   	  $("#statuscategory").attr('class','alert alert-success')
-	    $("#project_origin").change()
     }).fail(function (jqXHR, textStatus){
    }).error(function(xhr){
         const obj = JSON.parse(xhr.responseText)
@@ -197,7 +187,7 @@ $("#form_category").submit(function (event) {
 	$("button").attr('disabled','disabled');	
 	
 	$("#statusdownload").attr('class','alert alert-warning')
-        $("#statusdownload").html("We are preparing the data for you. It might take several minutes for big projects, plase wait.")	
+        $("#statusdownload").html("We are preparing the data for you, plase wait")	
 	    
 	var req = new XMLHttpRequest();
 	var csrftoken = $("[name='csrfmiddlewaretoken']").val() 
