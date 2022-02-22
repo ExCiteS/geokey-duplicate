@@ -1,3 +1,4 @@
+regex<2022.1.18
 django-debug-toolbar
 factory-boy
 coveralls

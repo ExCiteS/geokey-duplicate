@@ -1,2 +1,1 @@
 xlsxwriter
-regex<2022.1.18
